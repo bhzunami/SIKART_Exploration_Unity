@@ -8,6 +8,7 @@ public class MakeViz : MonoBehaviour {
     public int DataColumnY = 1;
     public int DataColumnZ = 2;
     public int DataColumnColour = 3;
+	public int DataColumnSize = 9;
 
     public float PosScaleX = 10.0f;
     public float PosScaleY = 10.0f;
@@ -26,27 +27,27 @@ public class MakeViz : MonoBehaviour {
         if (_dataSource != null)
         {
             make3DCloud();
-            update3DCloud(DataColumnX, DataColumnY, DataColumnZ,DataColumnColour);
+			update3DCloud(DataColumnX, DataColumnY, DataColumnZ,DataColumnColour, DataColumnSize);
         }
 	}
 	
 	// Update is called once per frame
 	void Update () {
         // Update coloumn assignment if one or more fields have changed
-	    if ( (DataColumnX != _dcX) || (DataColumnY != _dcY) || (DataColumnZ != _dcZ) || (DataColumnColour != _dcColour) )
-            update3DCloud(DataColumnX, DataColumnY, DataColumnZ, DataColumnColour);
+		if ( (DataColumnX != _dcX) || (DataColumnY != _dcY) || (DataColumnZ != _dcZ) || (DataColumnColour != _dcColour) )
+			update3DCloud(DataColumnX, DataColumnY, DataColumnZ, DataColumnColour, DataColumnSize);
     }
 
-    void update3DCloud(int colX, int colY, int colZ,int colColour)
+	void update3DCloud(int colX, int colY, int colZ,int colColour, int colSize)
     {
         _dcX = colX;
         _dcY = colY;
         _dcZ = colZ;
         _dcColour = colColour;
 
-        float minX, maxX, minY, maxY, minZ, maxZ, minColour, maxColour, scaleX, scaleY, scaleZ, scaleColour;
-        minX = maxX = minY = maxY = minZ = maxZ = minColour = maxColour = 0.0f;
-        scaleX = scaleY = scaleZ = scaleColour = 1.0f;
+        float minX, maxX, minY, maxY, minZ, maxZ, minColour, maxColour, minSize, maxSize, scaleX, scaleY, scaleZ, scaleColour, scaleSize;
+		minX = maxX = minY = maxY = minZ = maxZ = minColour = maxColour = minSize = maxSize = 0.0f;
+        scaleX = scaleY = scaleZ = scaleColour = scaleSize = 1.0f;
 
         if (_dataSource.GetDataValid())
         {
@@ -54,11 +55,13 @@ public class MakeViz : MonoBehaviour {
             _dataSource.GetColumnMinMaxValues(ref minY, ref maxY, colY);
             _dataSource.GetColumnMinMaxValues(ref minZ, ref maxZ, colZ);
             _dataSource.GetColumnMinMaxValues(ref minColour, ref maxColour, colColour);
+			_dataSource.GetColumnMinMaxValues (ref minSize, ref maxSize, colSize);
 
             scaleX = 1.0f / (maxX - minX);
             scaleY = 1.0f / (maxY - minY);
             scaleZ = 1.0f / (maxZ - minZ);
             scaleColour = 1.0f / (maxColour - minColour);
+			scaleSize = 1.0f / (maxSize - minSize);
 
             // Update position and colour of the 3D cloud objects
             for (int i = 0; i < _dataSource.NumRowsWithoutHeader; i++)
@@ -67,6 +70,7 @@ public class MakeViz : MonoBehaviour {
                 float newPosY = 0.0f;
                 float newPosZ = 0.0f;
                 float newColour = 0.0f;
+				float newSize = 0.0f;
                 _dataSource.GetArrayValue(ref newPosX, i, colX);
                 newPosX = (newPosX - minX) * scaleX * PosScaleX;
                 _dataSource.GetArrayValue(ref newPosY, i, colY);
@@ -75,6 +79,8 @@ public class MakeViz : MonoBehaviour {
                 newPosZ = (newPosZ - minZ) * scaleZ * PosScaleZ;
                 _dataSource.GetArrayValue(ref newColour, i, colColour);
                 newColour = (newColour - minColour) * scaleColour;
+				_dataSource.GetArrayValue(ref newSize, i, colSize);
+				newSize = (newSize - minSize) * scaleSize;
 
                 // Compute RGB colour by interpolating between red and green
                 Color newRGB;
@@ -86,7 +92,7 @@ public class MakeViz : MonoBehaviour {
                 GameObject obj = (GameObject)_objectArray[i];
 
                 obj.transform.position = new Vector3(newPosX, newPosY, newPosZ);
-                obj.transform.localScale = new Vector3(InstanceScale, InstanceScale, InstanceScale);
+				obj.transform.localScale = new Vector3(newSize*InstanceScale, newSize*InstanceScale, newSize*InstanceScale);
 
                 // Set colour of object
                 MeshRenderer rdr = obj.GetComponent<MeshRenderer>();
