@@ -27,4 +27,6 @@ ExportedObj/
 sysinfo.txt
 
 # Unity3D ProjectVersion
-ProjectSettings/
+ProjectSettings/ProjectVersion.txt
+ProjectSettings/ProjectSettings.asset
+ProjectSettings/GraphicsSettings.asset
