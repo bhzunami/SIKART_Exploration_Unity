@@ -16,7 +16,8 @@ public class MakeViz : MonoBehaviour {
 
     // These cache the corresponding public dataColumn fields
     // so that we can detect changes made in Editor in Update()
-    int _dcX, _dcY, _dcZ, _dcColour;
+    int _dcX, _dcY, _dcZ, _dcColour, _dcSize;
+    private float _oldSize;
 
     ArrayList _objectArray;
     ParseDB _dataSource;
@@ -34,7 +35,7 @@ public class MakeViz : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // Update coloumn assignment if one or more fields have changed
-		if ( (DataColumnX != _dcX) || (DataColumnY != _dcY) || (DataColumnZ != _dcZ) || (DataColumnColour != _dcColour) )
+		if ( (DataColumnX != _dcX) || (DataColumnY != _dcY) || (DataColumnZ != _dcZ) || (DataColumnColour != _dcColour) || (DataColumnSize != _dcSize)  || (InstanceScale != _oldSize))
 			update3DCloud(DataColumnX, DataColumnY, DataColumnZ, DataColumnColour, DataColumnSize);
     }
 
@@ -44,6 +45,8 @@ public class MakeViz : MonoBehaviour {
         _dcY = colY;
         _dcZ = colZ;
         _dcColour = colColour;
+	    _dcSize = colSize;
+        _oldSize = InstanceScale;
 
         float minX, maxX, minY, maxY, minZ, maxZ, minColour, maxColour, minSize, maxSize, scaleX, scaleY, scaleZ, scaleColour, scaleSize;
 		minX = maxX = minY = maxY = minZ = maxZ = minColour = maxColour = minSize = maxSize = 0.0f;

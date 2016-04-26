@@ -11,9 +11,10 @@ public class ParseDB : MonoBehaviour {
 
     float[,] _dataArray;
     bool _dataValid = false;
+    public UIScript UIScript;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () { //Awake
         if (FilePath.Length > 0)
         {
             if (ReadFileToArray(FilePath))
@@ -22,6 +23,7 @@ public class ParseDB : MonoBehaviour {
                 NumColumns = _dataArray.GetLength(1);
             }
         }
+        UIScript.updateDropDownValues(NumColumns);
     }
 	
 	// Update is called once per frame
