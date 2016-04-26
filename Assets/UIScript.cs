@@ -18,11 +18,14 @@ public class UIScript : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-        DropDownX.onValueChanged.AddListener(act => MakeViz.DataColumnX = DropDownX.value + 1);
-        DropDownY.onValueChanged.AddListener(act => MakeViz.DataColumnY = DropDownY.value + 1);
-        DropDownZ.onValueChanged.AddListener(act => MakeViz.DataColumnZ = DropDownZ.value + 1);
-        DropDownColor.onValueChanged.AddListener(act => MakeViz.DataColumnColour = DropDownColor.value + 1);
-        DropDownSize.onValueChanged.AddListener(act => MakeViz.DataColumnSize = DropDownSize.value + 1);
+        DropDownX.onValueChanged.AddListener(act => MakeViz.DataColumnX = DropDownX.value);
+        DropDownY.onValueChanged.AddListener(act => MakeViz.DataColumnY = DropDownY.value);
+        DropDownZ.onValueChanged.AddListener(act =>
+        {
+            MakeViz.DataColumnZ = DropDownZ.value;
+        });
+        DropDownColor.onValueChanged.AddListener(act => MakeViz.DataColumnColour = DropDownColor.value);
+        DropDownSize.onValueChanged.AddListener(act => MakeViz.DataColumnSize = DropDownSize.value);
         DropdownFixScale.onValueChanged.AddListener(act =>
         {
             MakeViz.InstanceScale = float.Parse(DropdownFixScale.options[DropdownFixScale.value].text);
@@ -44,12 +47,12 @@ public class UIScript : MonoBehaviour {
             DropDownSize.options.Add(new Dropdown.OptionData(ParseDB.Header[i - 1]));
         }
 
-        DropDownX.value = MakeViz.DataColumnX - 1;
-		DropDownY.value = MakeViz.DataColumnY - 1;
-		DropDownZ.value = MakeViz.DataColumnZ - 1;
-        DropDownColor.value = MakeViz.DataColumnColour - 1;
-        DropDownSize.value = MakeViz.DataColumnSize - 1;
-        DropdownFixScale.value = 2;
+        DropDownX.value = MakeViz.DataColumnX;
+		DropDownY.value = MakeViz.DataColumnY;
+		DropDownZ.value = MakeViz.DataColumnZ;
+        DropDownColor.value = MakeViz.DataColumnColour;
+        DropDownSize.value = MakeViz.DataColumnSize;
+        DropdownFixScale.value = 4;
 
 	}
 
