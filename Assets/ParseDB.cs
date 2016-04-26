@@ -10,6 +10,7 @@ public class ParseDB : MonoBehaviour {
     public bool HasHeaderRow;
 
     float[,] _dataArray;
+    public string[] Header;
     bool _dataValid = false;
     public UIScript UIScript;
 
@@ -98,13 +99,14 @@ public class ParseDB : MonoBehaviour {
         while ((line = file.ReadLine()) != null)
         {
             lineCount++;
+            char[] delimiterChars = { ' ', ',', ';', ':', '\t' };
+            
+            string[] items = line.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries); //prev (string[])null
             if (HasHeaderRow && lineCount <= 1)
             {
+                Header = items;
                 continue;
             }
-
-            char[] delimiterChars = { ' ', ',', ';', ':', '\t' };
-            string[] items = line.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries); //prev (string[])null
 
             if (items.Length > 0)
             {

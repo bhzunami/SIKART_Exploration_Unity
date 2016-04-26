@@ -13,6 +13,7 @@ public class UIScript : MonoBehaviour {
     public Dropdown DropDownSize;
     public Dropdown DropdownFixScale;
 
+    public ParseDB ParseDB;
     public MakeViz MakeViz;
     
     // Use this for initialization
@@ -36,11 +37,11 @@ public class UIScript : MonoBehaviour {
         DropDownSize.options.Clear();
 
         for (int i = 1; i <= nCol; i++) {
-			DropDownX.options.Add(new Dropdown.OptionData(i.ToString()));
-			DropDownY.options.Add(new Dropdown.OptionData(i.ToString()));
-			DropDownZ.options.Add(new Dropdown.OptionData(i.ToString()));
-            DropDownColor.options.Add(new Dropdown.OptionData(i.ToString()));
-            DropDownSize.options.Add(new Dropdown.OptionData(i.ToString()));
+			DropDownX.options.Add(new Dropdown.OptionData(ParseDB.Header[i-1]));
+			DropDownY.options.Add(new Dropdown.OptionData(ParseDB.Header[i - 1]));
+			DropDownZ.options.Add(new Dropdown.OptionData(ParseDB.Header[i - 1]));
+            DropDownColor.options.Add(new Dropdown.OptionData(ParseDB.Header[i - 1]));
+            DropDownSize.options.Add(new Dropdown.OptionData(ParseDB.Header[i - 1]));
         }
 
         DropDownX.value = MakeViz.DataColumnX - 1;
